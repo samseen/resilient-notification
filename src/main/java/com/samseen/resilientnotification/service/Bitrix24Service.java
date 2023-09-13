@@ -28,7 +28,7 @@ public class Bitrix24Service implements SMSGateway {
     @Override
     public SMSResponse sendSMS(SMSRequest smsRequest) {
         String url = bitrix24Config.getUrl() +"/api/v1/bitrix24/send/sms";
-        try(Response response = client.newCall(create(url, smsRequest)).execute()) {
+        try(Response response = client.newCall(createRequest(url, smsRequest)).execute()) {
             String json = response.body().string();
             log.info("Raw: [{}]", json);
             if (response.isSuccessful()) {
@@ -40,7 +40,7 @@ public class Bitrix24Service implements SMSGateway {
         }
     }
 
-    private Request create(String url, SMSRequest smsRequest) {
+    private Request createRequest(String url, SMSRequest smsRequest) {
         String json = jsonService.toJson(smsRequest);
         return new Request.Builder()
                 .url(url)

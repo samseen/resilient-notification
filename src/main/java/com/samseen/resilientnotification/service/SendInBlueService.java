@@ -28,7 +28,7 @@ public class SendInBlueService implements SMSGateway {
     @Override
     public SMSResponse sendSMS(SMSRequest smsRequest) {
         String url = sendInBlueConfig.getUrl() +"/api/v1/sendinblue/send/sms";
-        try (Response response = client.newCall(create(url, smsRequest)).execute()) {
+        try (Response response = client.newCall(createRequest(url, smsRequest)).execute()) {
             String json = response.body().string();
             log.info("Raw Json: [{}]", json);
             if (response.isSuccessful()) {
@@ -40,7 +40,7 @@ public class SendInBlueService implements SMSGateway {
         }
     }
 
-    private Request create(String url, SMSRequest smsRequest) {
+    private Request createRequest(String url, SMSRequest smsRequest) {
         String json = jsonService.toJson(smsRequest);
         return new Request.Builder()
                 .url(url)

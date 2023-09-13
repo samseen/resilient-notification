@@ -28,7 +28,7 @@ public class TextMagicService implements SMSGateway {
     @Override
     public SMSResponse sendSMS(SMSRequest smsRequest) {
         String url = textMagicConfig.getUrl() + "/api/v1/textmagic/send/sms";
-        try (Response response = client.newCall(create(url, smsRequest)).execute()) {
+        try (Response response = client.newCall(createRequest(url, smsRequest)).execute()) {
             String json = response.body().toString();
             if (response.isSuccessful()) {
                 log.info("Raw Json: [{}]", json);
@@ -40,7 +40,7 @@ public class TextMagicService implements SMSGateway {
         }
     }
 
-    private Request create(String url, SMSRequest smsRequest) {
+    private Request createRequest(String url, SMSRequest smsRequest) {
         String json = jsonService.toJson(smsRequest);
         return new Request.Builder()
                 .url(url)
